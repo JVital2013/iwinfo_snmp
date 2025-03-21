@@ -1,0 +1,33 @@
+diff --git a/Makefile b/Makefile
+index adb9e73..374fb1c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -16,6 +16,9 @@ IWINFO_CLI         = iwinfo
+ IWINFO_CLI_LDFLAGS = $(LDFLAGS) -L. -liwinfo
+ IWINFO_CLI_OBJ     = iwinfo_cli.o
+
++IWINFO_SNMP         = iwinfo_snmp
++IWINFO_SNMP_LDFLAGS = $(LDFLAGS) -L. -liwinfo
++IWINFO_SNMP_OBJ     = iwinfo_snmp.o
+
+ ifneq ($(filter wl wext madwifi,$(IWINFO_BACKENDS)),)
+        IWINFO_CFLAGS  += -DUSE_WEXT
+@@ -40,7 +43,7 @@ ifneq ($(filter nl80211,$(IWINFO_BACKENDS)),)
+ endif
+
+
+-compile: clean $(IWINFO_LIB) $(IWINFO_LUA) $(IWINFO_CLI)
++compile: clean $(IWINFO_LIB) $(IWINFO_LUA) $(IWINFO_CLI) $(IWINFO_SNMP)
+
+ %.o: %.c
+        $(CC) $(IWINFO_CFLAGS) $(FPIC) -c -o $@ $<
+@@ -55,5 +58,8 @@ $(IWINFO_LUA): $(IWINFO_LUA_OBJ)
+ $(IWINFO_CLI): $(IWINFO_CLI_OBJ)
+        $(CC) $(IWINFO_LDFLAGS) $(IWINFO_CLI_LDFLAGS) -o $(IWINFO_CLI) $(IWINFO_CLI_OBJ)
+
++$(IWINFO_SNMP): $(IWINFO_SNMP_OBJ)
++       $(CC) $(IWINFO_LDFLAGS) $(IWINFO_SNMP_LDFLAGS) -o $(IWINFO_SNMP) $(IWINFO_SNMP_OBJ)
++
+ clean:
+-       rm -f *.o $(IWINFO_LIB) $(IWINFO_LUA) $(IWINFO_CLI)
++       rm -f *.o $(IWINFO_LIB) $(IWINFO_LUA) $(IWINFO_CLI) $(IWINFO_SNMP)
